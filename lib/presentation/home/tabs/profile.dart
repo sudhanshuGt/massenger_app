@@ -95,7 +95,7 @@ class ProfileTab extends StatelessWidget {
                   onTap: () => print("Privacy & Policy tapped"),
                 ),
 
-                const SizedBox(height: 40), // Add space before button if needed
+                const SizedBox(height: 40),
 
                 // 🔻 Logout button always last
                 ElevatedButton.icon(
