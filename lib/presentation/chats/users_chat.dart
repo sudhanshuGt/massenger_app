@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:messanger_app/viewmodel/chat_viewmodel.dart';
 import 'package:provider/provider.dart';
-
 import '../../model/chat_user_info.dart';
+import '../../viewmodel/chat_viewmodel.dart';
 
 class ChatScreen extends StatefulWidget {
   final UserInfoModel user;
@@ -16,7 +14,6 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
-
   late final ChatViewModel _viewModel;
 
   @override
@@ -25,7 +22,6 @@ class _ChatScreenState extends State<ChatScreen> {
     _viewModel = ChatViewModel();
     _viewModel.startPolling(widget.user.username);
   }
-
 
   @override
   void dispose() {
@@ -36,6 +32,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return ChangeNotifierProvider.value(
       value: _viewModel,
       child: Consumer<ChatViewModel>(
@@ -61,7 +59,16 @@ class _ChatScreenState extends State<ChatScreen> {
                     itemBuilder: (_, index) {
                       final msg = viewModel.messages[
                       viewModel.messages.length - 1 - index];
-                      final isMe = msg.sender.username != widget.user.username;
+                      final isMe =
+                          msg.sender.username != widget.user.username;
+
+                      final bgColor = isMe
+                          ? (isDark ? Colors.blue[700] : Colors.blue[100])
+                          : (isDark ? Colors.grey[800] : Colors.grey[300]);
+
+                      final textColor =
+                      isDark ? Colors.white : Colors.black;
+
                       return Align(
                         alignment: isMe
                             ? Alignment.centerRight
@@ -70,12 +77,13 @@ class _ChatScreenState extends State<ChatScreen> {
                           margin: const EdgeInsets.all(8),
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: isMe
-                                ? Colors.blue[100]
-                                : Colors.grey[300],
+                            color: bgColor,
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Text(msg.content),
+                          child: Text(
+                            msg.content,
+                            style: TextStyle(color: textColor),
+                          ),
                         ),
                       );
                     },
@@ -88,18 +96,34 @@ class _ChatScreenState extends State<ChatScreen> {
                       Expanded(
                         child: TextField(
                           controller: _controller,
-                          decoration: const InputDecoration(
+                          style: TextStyle(
+                            color:
+                            Theme.of(context).textTheme.bodyLarge?.color,
+                          ),
+                          decoration: InputDecoration(
                             hintText: "Type a message",
-                            border: OutlineInputBorder(),
+                            hintStyle: TextStyle(
+                              color: Theme.of(context).hintColor,
+                            ),
+                            filled: true,
+                            fillColor: Theme.of(context).cardColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                         ),
                       ),
+                      const SizedBox(width: 8),
                       IconButton(
-                        icon: const Icon(Icons.send),
+                        icon: Icon(
+                          Icons.send,
+                          color: Theme.of(context).primaryColor,
+                        ),
                         onPressed: () {
-                          if (_controller.text.trim().isNotEmpty) {
+                          final text = _controller.text.trim();
+                          if (text.isNotEmpty) {
                             _viewModel.sendMessage(
-                                widget.user.username, _controller.text.trim());
+                                widget.user.username, text);
                             _controller.clear();
                           }
                         },
@@ -114,6 +138,4 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
-
-
 }

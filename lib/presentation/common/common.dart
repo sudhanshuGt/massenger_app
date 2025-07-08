@@ -1,7 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget profileOption({required String label, required IconData icon, required VoidCallback onTap}) {
+
+Widget profileOption({
+  required String label,
+  required IconData icon,
+  required VoidCallback onTap,
+  bool showSwitch = false,
+  bool switchValue = false,
+  ValueChanged<bool>? onSwitchChanged,
+}) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
@@ -21,7 +29,12 @@ Widget profileOption({required String label, required IconData icon, required Vo
               Text(label, style: const TextStyle(fontSize: 16)),
             ],
           ),
-          const Icon(Icons.arrow_forward_ios, size: 16),
+          showSwitch
+              ? Switch(
+            value: switchValue,
+            onChanged: onSwitchChanged,
+          )
+              : const Icon(Icons.arrow_forward_ios, size: 16),
         ],
       ),
     ),

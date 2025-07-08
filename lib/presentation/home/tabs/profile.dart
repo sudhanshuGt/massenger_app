@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import '../../../viewmodel/auth_viewmodel.dart';
-import '../../common.dart';
+import '../../../viewmodel/theme_viewmodel.dart';
+import '../../common/common.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
@@ -21,6 +22,8 @@ class ProfileTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<AuthViewModel>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
 
     return FutureBuilder(
       future: _loadUser(),
@@ -85,9 +88,12 @@ class ProfileTab extends StatelessWidget {
                   onTap: () => print("Settings tapped"),
                 ),
                 profileOption(
-                  label: "Toggle Theme",
-                  icon: Icons.dark_mode_outlined,
-                  onTap: () => print("Toggle theme tapped"),
+                  label: "Dark Mode",
+                  icon: Icons.dark_mode,
+                  onTap: () {}, // still required, but unused
+                  showSwitch: true,
+                  switchValue: themeProvider.isDarkMode,
+                  onSwitchChanged: (_) => themeProvider.toggleTheme(),
                 ),
                 profileOption(
                   label: "Privacy & Policy",
@@ -97,7 +103,6 @@ class ProfileTab extends StatelessWidget {
 
                 const SizedBox(height: 40),
 
-                // 🔻 Logout button always last
                 ElevatedButton.icon(
                   onPressed: () => viewModel.logout(context),
                   icon: const Icon(Icons.logout),

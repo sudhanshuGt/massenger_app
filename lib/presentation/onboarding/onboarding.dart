@@ -20,12 +20,12 @@ class OnboardingScreen extends StatelessWidget {
       Column(
         children: [
           Expanded(
-            flex: 5,
+            flex: 4,
             child: Center(
               child: SizedBox(
                 width: screenWidth * 1.2,
                 height: screenWidth * 1.2,
-                child: AnimatedHeroStack(),
+                child: const AnimatedHeroStack(),
               ),
             ),
           ),
@@ -107,7 +107,6 @@ class OnboardingScreen extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 24),
-
 
               ],
             ),
