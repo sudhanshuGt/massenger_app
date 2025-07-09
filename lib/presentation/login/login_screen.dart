@@ -92,16 +92,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 validator: (val) => val == null || val.isEmpty ? 'Enter password' : null,
               ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  const Spacer(),
-                  TextButton(
-                    onPressed: () {}, // Optional
-                    child: const Text("Forgot Password?"),
-                  )
-                ],
-              ),
+
+
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: viewModel.isLoading

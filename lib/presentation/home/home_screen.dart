@@ -4,16 +4,12 @@ import 'package:messanger_app/presentation/home/tabs/profile.dart';
 import 'package:messanger_app/presentation/home/tabs/search.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodel/chat_viewmodel.dart';
+import '../../viewmodel/nav_viewmodel.dart';
 
-class HomeScreen extends StatefulWidget {
+
+
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +21,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return ChangeNotifierProvider(
       create: (_) => ChatViewModel(),
-      child: Scaffold(
-        appBar: AppBar(title: const Text("Messenger App")),
-        body: tabs[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (i) => setState(() => _currentIndex = i),
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-          ],
-        ),
+      child: Consumer<NavigationViewModel>(
+        builder: (context, navViewModel, _) {
+          return Scaffold(
+            appBar: AppBar(title: const Text("Messenger App")),
+            body: tabs[navViewModel.currentIndex],
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: navViewModel.currentIndex,
+              onTap: navViewModel.setIndex,
+              items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
+                BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+                BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

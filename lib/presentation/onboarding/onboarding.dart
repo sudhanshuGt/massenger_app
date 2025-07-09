@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:messanger_app/presentation/login/login_screen.dart';
 import 'package:messanger_app/presentation/login/signup_screen.dart';
 
 import 'onboarding_image.dart';
@@ -89,7 +90,7 @@ class OnboardingScreen extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const SignUpScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
                     },
                     icon: const Icon(Icons.rocket_launch_outlined, color: Colors.white),
                     label: const Text(

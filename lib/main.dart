@@ -3,6 +3,7 @@ import 'package:messanger_app/presentation/onboarding/onboarding.dart';
 import 'package:messanger_app/presentation/home/home_screen.dart';
 import 'package:messanger_app/presentation/theme.dart';
 import 'package:messanger_app/viewmodel/auth_viewmodel.dart';
+import 'package:messanger_app/viewmodel/nav_viewmodel.dart';
 import 'package:messanger_app/viewmodel/theme_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => NavigationViewModel()),
       ],
       child: const MyApp(),
     ),

@@ -15,13 +15,24 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   late final ChatViewModel _viewModel;
+  bool isTyping = false;
 
   @override
   void initState() {
     super.initState();
     _viewModel = ChatViewModel();
     _viewModel.startPolling(widget.user.username);
+
+    _controller.addListener(() {
+      final typing = _controller.text.trim().isNotEmpty;
+      if (isTyping != typing) {
+        setState(() {
+          isTyping = typing;
+        });
+      }
+    });
   }
+
 
   @override
   void dispose() {
@@ -42,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
             appBar: AppBar(
               title: Row(
                 children: [
-                  const CircleAvatar(child: Icon(Icons.person)),
+                  const Hero(tag: "profile-pic", child:  CircleAvatar(child: Icon(Icons.person))),
                   const SizedBox(width: 8),
                   Text('${widget.user.firstName} ${widget.user.lastName}'),
                 ],
@@ -117,7 +128,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       IconButton(
                         icon: Icon(
                           Icons.send,
-                          color: Theme.of(context).primaryColor,
+                          color:(isTyping ? Colors.blue[700] : Colors.blue[100]),
                         ),
                         onPressed: () {
                           final text = _controller.text.trim();
@@ -127,6 +138,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             _controller.clear();
                           }
                         },
+
                       ),
                     ],
                   ),
